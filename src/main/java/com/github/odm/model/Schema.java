@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
 /**
  * <p>
  * Object representation of a database or schema
@@ -12,25 +15,29 @@ import java.util.Map;
  * @author felipecrp
  * 
  */
+@XStreamAlias("schema")
 public class Schema {
-	private Map<String, Table> tables;
+	@XStreamImplicit
+	private Map<String, Table> tablesMap;
+	
+	
 
 	public Schema() {
-		this.tables = new HashMap<String, Table>();
+		this.tablesMap = new HashMap<String, Table>();
 	}
 
 	public Collection<Table> getTables() {
-		return tables.values();
+		return tablesMap.values();
 	}
 
 	public Table getTable(String tableName) {
 		Table table = null;
 
-		if (tables.containsKey(tableName)) {
-			table = tables.get(tableName);
+		if (tablesMap.containsKey(tableName)) {
+			table = tablesMap.get(tableName);
 		} else {
 			table = new Table(this, tableName);
-			tables.put(tableName, table);
+			tablesMap.put(tableName, table);
 		}
 
 		return table;
