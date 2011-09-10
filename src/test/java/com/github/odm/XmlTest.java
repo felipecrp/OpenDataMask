@@ -30,9 +30,9 @@ public class XmlTest {
 
 		b_b.addMask(new StringList());
 
+		
 		XStream stream = new XStream();
-		stream.processAnnotations(new Class[] { Schema.class,
-				NullableMask.class, StringList.class, UniqueStringList.class });
+		stream.autodetectAnnotations(true);
 		System.out.println(stream.toXML(schema));
 	}
 

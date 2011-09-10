@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema>
+  <table name="A">
+    <column name="A">
+      <masks>
+        <nullable/>
+      </masks>
+    </column>
+    <column name="B">
+      <masks>
+        <stringList>
+          <string>AAAA</string>
+          <string>BBBB</string>
+          <string>CCCC</string>
+          <string>DDDD</string>
+          <string>EEEE</string>
+          <string>FFFF</string>
+          <string>GGGG</string>
+          <string>HHHH</string>
+        </stringList>
+      </masks>
+    </column>
+  </table>
+  <table name="B">
+    <column name="A">
+      <masks/>
+    </column>
+    <column name="B">
+      <masks>
+        <stringList>
+          <string>AAAA</string>
+          <string>BBBB</string>
+          <string>CCCC</string>
+          <string>DDDD</string>
+          <string>EEEE</string>
+          <string>FFFF</string>
+          <string>GGGG</string>
+          <string>HHHH</string>
+        </stringList>
+      </masks>
+    </column>
+  </table>
+</schema>
