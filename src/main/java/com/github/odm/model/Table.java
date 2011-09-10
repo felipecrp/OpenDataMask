@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 /**
  * <p>
  * Object representation of a table
@@ -14,13 +19,23 @@ import java.util.Map;
  * @author felipecrp
  * 
  */
+@XStreamAlias("table")
 public class Table {
+	@XStreamAsAttribute
 	private String name;
-	private Map<String, Column> columns;
-	private Map<String, List<ForeignKey>> foreignKeys;
-	private List<Column> primaryKey;
-	private Schema schema;
 
+	@XStreamImplicit
+	private List<Column> columns;
+
+	@XStreamOmitField
+	private Schema schema;
+	
+	private Map<String, List<ForeignKey>> foreignKeys;
+	
+	private List<Column> primaryKey;
+
+	@Deprecated
+	@XStreamOmitField
 	private boolean empty;
 
 	public Table(Schema schema, String name) {
@@ -31,7 +46,7 @@ public class Table {
 
 		this.schema = schema;
 		this.name = name;
-		this.columns = new HashMap<String, Column>();
+		this.columns = new ArrayList<Column>();
 		this.primaryKey = new ArrayList<Column>();
 		this.foreignKeys = new HashMap<String, List<ForeignKey>>();
 		this.empty = false;
@@ -45,20 +60,23 @@ public class Table {
 		return schema;
 	}
 
-	public Collection<Column> getColumns() {
-		return columns.values();
+	public List<Column> getColumns() {
+		return new ArrayList<Column>(columns);
 	}
 
 	public Column getColumn(String columnName) {
-		Column column = null;
-
-		if (columns.containsKey(columnName)) {
-			column = columns.get(columnName);
-		} else {
-			column = new Column(this, columnName);
-			columns.put(columnName, column);
+		if (columnName == null) {
+			return null;
 		}
 
+		for (Column column : columns) {
+			if (columnName.equalsIgnoreCase(column.getName())) {
+				return column;
+			}
+		}
+
+		Column column = new Column(this, columnName);
+		columns.add(column);
 		return column;
 	}
 
@@ -115,11 +133,11 @@ public class Table {
 	public void setEmpty(boolean empty) {
 		this.empty = empty;
 	}
-	
+
 	public Collection<List<ForeignKey>> getForeignKeys() {
 		return foreignKeys.values();
 	}
-	
+
 	public List<Column> getPrimaryKey() {
 		return primaryKey;
 	}
