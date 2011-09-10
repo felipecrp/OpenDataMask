@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.List;
 import java.util.Map;
 
 import com.github.odm.data.DataTable;
@@ -54,10 +53,11 @@ public class QueryUtil {
 		return result;
 	}
 
-	public static void insert(Connection conn, DataTable data) throws SQLException {
+	public static void insert(Connection conn, DataTable data)
+			throws SQLException {
 		Table table = data.getTable();
 		Map<String, Object> row = data.getRow();
-		
+
 		String insert = "INSERT INTO " + table.getName() + " (";
 		boolean isFirst = true;
 		for (Column column : table.getColumns()) {
@@ -108,7 +108,8 @@ public class QueryUtil {
 		insert += ")";
 
 		PreparedStatement statement = conn.prepareStatement(insert);
-		boolean sucess = statement.execute();
+		// boolean sucess =
+		statement.execute();
 
 	}
 
