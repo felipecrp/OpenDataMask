@@ -6,15 +6,24 @@ import java.util.List;
 import java.util.Random;
 
 import com.github.odm.model.Column;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
- * <p>Replace column value for one random string from a custom list</p>
+ * <p>
+ * Replace column value for one random string from a custom list
+ * </p>
  * 
  * @author felipecrp
  * 
  */
-public class StringList implements Mask {
+@XStreamAlias("stringList")
+public class StringList extends DefaultMask {
+	@XStreamImplicit
 	private List<String> strings;
+	
+	@XStreamOmitField
 	private Random random;
 
 	public StringList() {

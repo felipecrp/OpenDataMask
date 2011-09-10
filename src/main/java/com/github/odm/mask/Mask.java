@@ -1,6 +1,7 @@
 package com.github.odm.mask;
 
 import com.github.odm.model.Column;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * <p>

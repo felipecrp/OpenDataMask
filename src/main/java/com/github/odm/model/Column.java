@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.github.odm.mask.Mask;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * <p>
@@ -15,16 +19,27 @@ import com.github.odm.mask.Mask;
  * @author felipecrp
  * 
  */
+@XStreamAlias("column")
 public class Column {
+	@XStreamAsAttribute
 	private String name;
+
+	@XStreamOmitField
 	private Table table;
+
+	@XStreamOmitField
 	private int type;
-	private Set<Mask> masks;
+
+	private List<Mask> masks;
+
+	@XStreamOmitField
 	private boolean isNullable;
+
+	@XStreamOmitField
 	private List<ForeignKey> foreignKeys;
 
 	public Column(Table table, String name) {
-		this.masks = new HashSet<Mask>();
+		this.masks = new ArrayList<Mask>();
 		this.name = name;
 		this.isNullable = true;
 		this.table = table;
@@ -49,12 +64,12 @@ public class Column {
 	}
 
 	public void addMask(Mask mask) {
-		if (mask != null && mask.canMask(this)) {
+		//if (mask != null && mask.canMask(this)) {
 			masks.add(mask);
-		}
+	//	}
 	}
 
-	public Set<Mask> getMasks() {
+	public List<Mask> getMasks() {
 		return masks;
 	}
 
@@ -69,7 +84,7 @@ public class Column {
 	public boolean isNullable() {
 		return isNullable;
 	}
-	
+
 	public Table getTable() {
 		return table;
 	}
@@ -77,7 +92,7 @@ public class Column {
 	public void addForeignKey(ForeignKey foreignKey) {
 		foreignKeys.add(foreignKey);
 	}
-	
+
 	public List<ForeignKey> getForeignKeys() {
 		return foreignKeys;
 	}

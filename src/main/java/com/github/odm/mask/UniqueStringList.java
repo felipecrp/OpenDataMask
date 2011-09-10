@@ -1,5 +1,7 @@
 package com.github.odm.mask;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * <p>
  * Replace column value for one random string from a custom list
@@ -11,6 +13,7 @@ package com.github.odm.mask;
  * @author felipecrp
  * 
  */
+@XStreamAlias("uniqueStringList")
 public class UniqueStringList extends StringList {
 
 	@Override

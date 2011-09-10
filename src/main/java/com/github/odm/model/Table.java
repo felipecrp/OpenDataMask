@@ -30,8 +30,10 @@ public class Table {
 	@XStreamOmitField
 	private Schema schema;
 	
+	@XStreamOmitField
 	private Map<String, List<ForeignKey>> foreignKeys;
 	
+	@XStreamOmitField
 	private List<Column> primaryKey;
 
 	@Deprecated
