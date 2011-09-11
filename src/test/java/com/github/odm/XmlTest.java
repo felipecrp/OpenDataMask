@@ -25,7 +25,7 @@ import com.thoughtworks.xstream.XStream;
 public class XmlTest {
 
 	@Test
-	public void test() throws URISyntaxException, IOException {
+	public void serialize() throws URISyntaxException, IOException {
 		MaskXml mask1 = new MaskXml(NullableMask.class.getName());
 		Properties mask2Prop = new Properties();
 		mask2Prop.setProperty("list", "AAA,BBB,CCC,DDD,EEE");
@@ -55,4 +55,22 @@ public class XmlTest {
 		assertEquals(originalXmlString, stream.toXML(schema));
 	}
 
+	@Test
+	public void deserialize() throws URISyntaxException {
+		XStream stream = new XStream();
+		stream.processAnnotations(SchemaXml.class);
+		File xml = new File(new URI(getClass().getClassLoader().getResource("xml-test.xml").toString()));
+		SchemaXml schema = (SchemaXml) stream.fromXML(xml);
+		
+		assertEquals(2, schema.getTables().size());		
+		TableXml table = schema.getTables().get(0);
+		assertEquals("A", table.getName());
+		
+		assertEquals(2, table.getColumns().size());	
+		ColumnXml column = table.getColumns().get(0);
+		assertEquals("a", column.getName());
+		
+		MaskXml mask = column.getMasks().get(0);
+		assertEquals("com.github.odm.mask.NullableMask", mask.getClassname());
+	}
 }
