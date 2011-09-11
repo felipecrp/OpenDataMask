@@ -1,6 +1,8 @@
 package com.github.odm;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -47,23 +49,24 @@ public class ODM {
 
 		PosixParser parser = new PosixParser();
 		CommandLine cmd = parser.parse(options, args);
+		// run(new File(cmd.getOptionValue("c")));
+	}
 
+	public void run(File config, Connection orignConn, Connection destConn)
+			throws SQLException, IOException {
 		XStream configLoader = new XStream();
 		configLoader.autodetectAnnotations(true);
 		configLoader.processAnnotations(new Class[] { Schema.class,
 				NullableMask.class, StringList.class, UniqueStringList.class });
-		Schema schema = (Schema) configLoader.fromXML(new File(cmd
-				.getOptionValue("c")));
-
-		Class.forName("com.mysql.jdbc.Driver").newInstance();
-		Connection orignConn = DriverManager.getConnection(
-				"jdbc:mysql://localhost/test", "test", "test");
-
-		Connection destConn = DriverManager.getConnection(
-				"jdbc:mysql://localhost/test2", "test", "test");
+		
+		Schema schema = (Schema) configLoader.fromXML(new FileInputStream(
+				config));
+		
+		
+		//TODO FIX fromXML returning null
+		schema = new Schema();
 
 		loadSchema(orignConn, schema);
-		
 
 		for (Table table : schema.getTables()) {
 			QueryUtil.delete(destConn, table);
@@ -80,9 +83,6 @@ public class ODM {
 				QueryUtil.insert(destConn, data);
 			}
 		}
-
-		orignConn.close();
-		destConn.close();
 
 	}
 
@@ -104,7 +104,6 @@ public class ODM {
 
 		return options;
 	}
-
 
 	private void loadSchema(Connection conn, Schema schema) throws SQLException {
 		DatabaseMetaData metadata = conn.getMetaData();

@@ -3,6 +3,7 @@ package com.github.odm;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Connection;
@@ -19,21 +20,30 @@ import org.junit.Test;
 public class BasicLoad {
 
 	@Test
-	public void test() throws SQLException, URISyntaxException {
+	public void test() throws SQLException, URISyntaxException, IOException {
 		
 		runScript("jdbc:hsqldb:mem:orign", "database.sql");
 		runScript("jdbc:hsqldb:mem:orign", "data.sql");
-		
-		Connection c = DriverManager.getConnection("jdbc:hsqldb:mem:orign",
+		Connection orignConn = DriverManager.getConnection("jdbc:hsqldb:mem:orign",
 				"SA", "");
-
-		PreparedStatement state = c.prepareStatement("select * from Student");
+		
+		runScript("jdbc:hsqldb:mem:dest", "database.sql");
+		Connection destConn = DriverManager.getConnection("jdbc:hsqldb:mem:dest",
+				"SA", "");
+		
+		ODM odm = new ODM();
+		File config = new File(new URI(getClass().getClassLoader().getResource("sample.xml").toString()));
+		odm.run(config, orignConn, destConn);
+		
+		
+		PreparedStatement state = destConn.prepareStatement("select * from Student");
 		ResultSet result = state.executeQuery();
 		while(result.next()) {
 			System.out.println(result.getString("id") + ":" + result.getString("name"));
 		}
 		
-		c.close();
+		orignConn.close();
+		destConn.close();
 	}
 
 	private void runScript(String uri, String script) throws URISyntaxException {

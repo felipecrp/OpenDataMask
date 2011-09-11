@@ -27,6 +27,10 @@ public class Schema {
 		this.tables = new ArrayList<Table>();
 	}
 
+	public void readResolve() {
+		this.tables = new ArrayList<Table>();
+	}
+
 	public Table getTable(String tableName) {
 		if (tableName == null) {
 			return null;
@@ -42,7 +46,7 @@ public class Schema {
 		tables.add(table);
 		return table;
 	}
-	
+
 	public List<Table> getTables() {
 		return new ArrayList<Table>(tables);
 	}

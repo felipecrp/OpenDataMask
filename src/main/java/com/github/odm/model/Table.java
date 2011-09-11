@@ -39,7 +39,7 @@ public class Table {
 	@Deprecated
 	@XStreamOmitField
 	private boolean empty;
-
+	
 	public Table(Schema schema, String name) {
 		if (schema == null || name == null) {
 			throw new IllegalArgumentException(
@@ -54,6 +54,12 @@ public class Table {
 		this.empty = false;
 	}
 
+	public void readResolve() {
+		this.columns = new ArrayList<Column>();
+		this.primaryKey = new ArrayList<Column>();
+		this.foreignKeys = new HashMap<String, List<ForeignKey>>();
+	}
+	
 	public String getName() {
 		return name;
 	}
