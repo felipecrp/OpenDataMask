@@ -1,0 +1,20 @@
+<schema>
+  <table name="A">
+    <column name="a">
+      <mask class="com.github.odm.mask.NullableMask">
+        <params/>
+      </mask>
+    </column>
+    <column name="b"/>
+  </table>
+  <table name="B">
+    <column name="a"/>
+    <column name="b">
+      <mask class="com.github.odm.mask.StringList">
+        <params>
+          <property name="list" value="AAA,BBB,CCC,DDD,EEE"/>
+        </params>
+      </mask>
+    </column>
+  </table>
+</schema>

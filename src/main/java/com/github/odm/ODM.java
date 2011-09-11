@@ -55,12 +55,12 @@ public class ODM {
 	public void run(File config, Connection orignConn, Connection destConn)
 			throws SQLException, IOException {
 		XStream configLoader = new XStream();
+		configLoader.alias("schema", Schema.class);
 		configLoader.autodetectAnnotations(true);
 		configLoader.processAnnotations(new Class[] { Schema.class,
 				NullableMask.class, StringList.class, UniqueStringList.class });
 		
-		Schema schema = (Schema) configLoader.fromXML(new FileInputStream(
-				config));
+		Schema schema = (Schema) configLoader.fromXML(new FileInputStream(config));
 		
 		
 		//TODO FIX fromXML returning null

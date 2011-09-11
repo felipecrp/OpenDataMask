@@ -1,44 +1,58 @@
 package com.github.odm;
 
+import static org.junit.Assert.*;
+
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Properties;
 
 import org.junit.Test;
 
-import com.github.odm.mask.Mask;
 import com.github.odm.mask.NullableMask;
 import com.github.odm.mask.StringList;
-import com.github.odm.mask.UniqueStringList;
-import com.github.odm.model.Column;
-import com.github.odm.model.Schema;
-import com.github.odm.model.Table;
+import com.github.odm.xml.ColumnXml;
+import com.github.odm.xml.MaskXml;
+import com.github.odm.xml.SchemaXml;
+import com.github.odm.xml.TableXml;
 import com.thoughtworks.xstream.XStream;
 
 public class XmlTest {
 
 	@Test
-	public void test() throws FileNotFoundException {
-		Schema schema = new Schema();
-		Table a = schema.getTable("A");
-		Table b = schema.getTable("B");
+	public void test() throws URISyntaxException, IOException {
+		MaskXml mask1 = new MaskXml(NullableMask.class.getName());
+		Properties mask2Prop = new Properties();
+		mask2Prop.setProperty("list", "AAA,BBB,CCC,DDD,EEE");
+		MaskXml mask2 = new MaskXml(StringList.class.getName(), mask2Prop);
 
-		Column a_a = a.getColumn("A");
-		Column a_b = a.getColumn("B");
+		ColumnXml a_a = new ColumnXml("a", mask1);
+		ColumnXml a_b = new ColumnXml("b");
+		ColumnXml b_a = new ColumnXml("a");
+		ColumnXml b_b = new ColumnXml("b", mask2);
 
-		Column b_a = b.getColumn("A");
-		Column b_b = b.getColumn("B");
+		TableXml a = new TableXml("A", a_a, a_b);
+		TableXml b = new TableXml("B", b_a, b_b);
 
-		a_a.addMask(new NullableMask());
-		a_b.addMask(new StringList());
+		SchemaXml schema = new SchemaXml(a, b);
 
-		b_b.addMask(new StringList());
-
-		
 		XStream stream = new XStream();
 		stream.autodetectAnnotations(true);
-		stream.toXML(schema, new FileOutputStream(new File("a.xml")));
 		System.out.println(stream.toXML(schema));
+
+		File xml = new File(new URI(getClass().getClassLoader().getResource("xml-test.xml").toString()));
+		byte[] buffer = new byte[(int) xml.length()];
+		BufferedInputStream f = new BufferedInputStream(
+				new FileInputStream(xml));
+		f.read(buffer);
+		String originalXmlString = new String(buffer);
+		
+		assertEquals(originalXmlString, stream.toXML(schema));
 	}
 
 }
