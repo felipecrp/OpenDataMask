@@ -63,7 +63,7 @@ public class ODM {
 				"jdbc:mysql://localhost/test2", "test", "test");
 
 		loadSchema(orignConn, schema);
-		loadMask(schema);
+		
 
 		for (Table table : schema.getTables()) {
 			QueryUtil.delete(destConn, table);
@@ -105,11 +105,6 @@ public class ODM {
 		return options;
 	}
 
-	private void loadMask(Schema schema) {
-		Table table = schema.getTable("Empresa");
-		Column column = table.getColumn("nome");
-		column.addMask(new UniqueStringList());
-	}
 
 	private void loadSchema(Connection conn, Schema schema) throws SQLException {
 		DatabaseMetaData metadata = conn.getMetaData();
