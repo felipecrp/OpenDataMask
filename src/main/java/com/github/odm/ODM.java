@@ -26,6 +26,7 @@ import com.github.odm.model.Column;
 import com.github.odm.model.Schema;
 import com.github.odm.model.Table;
 import com.github.odm.util.QueryUtil;
+import com.github.odm.xml.SchemaXml;
 import com.thoughtworks.xstream.XStream;
 
 public class ODM {
@@ -54,22 +55,17 @@ public class ODM {
 
 	public void run(File config, Connection orignConn, Connection destConn)
 			throws SQLException, IOException {
-		XStream configLoader = new XStream();
-		configLoader.alias("schema", Schema.class);
-		configLoader.autodetectAnnotations(true);
-		configLoader.processAnnotations(new Class[] { Schema.class,
-				NullableMask.class, StringList.class, UniqueStringList.class });
-		
-		Schema schema = (Schema) configLoader.fromXML(new FileInputStream(config));
-		
-		
-		//TODO FIX fromXML returning null
-		schema = new Schema();
 
-		loadSchema(orignConn, schema);
+		XStream configLoader = new XStream();
+		configLoader.processAnnotations(SchemaXml.class);
+		SchemaXml schemaXml = (SchemaXml) configLoader
+				.fromXML(new FileInputStream(config));
+
+		MetadataReader metadataReader = new MetadataReader(orignConn);
+		Schema schema = metadataReader.buildSchema();
 
 		for (Table table : schema.getTables()) {
-			QueryUtil.delete(destConn, table);
+			System.out.println(table);
 		}
 
 		for (Table table : schema.getTables()) {

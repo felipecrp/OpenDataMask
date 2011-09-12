@@ -18,9 +18,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * @author felipecrp
  * 
  */
-@XStreamAlias("schema")
 public class Schema {
-	@XStreamImplicit
 	private List<Table> tables;
 
 	public Schema() {
@@ -42,6 +40,10 @@ public class Schema {
 			}
 		}
 
+		return null;	
+	}
+	
+	public Table createTable(String tableName) {
 		Table table = new Table(this, tableName);
 		tables.add(table);
 		return table;

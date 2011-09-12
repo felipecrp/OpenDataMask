@@ -29,17 +29,17 @@ public class Table {
 
 	@XStreamOmitField
 	private Schema schema;
-	
+
 	@XStreamOmitField
 	private Map<String, List<ForeignKey>> foreignKeys;
-	
+
 	@XStreamOmitField
 	private List<Column> primaryKey;
 
 	@Deprecated
 	@XStreamOmitField
 	private boolean empty;
-	
+
 	public Table(Schema schema, String name) {
 		if (schema == null || name == null) {
 			throw new IllegalArgumentException(
@@ -59,7 +59,7 @@ public class Table {
 		this.primaryKey = new ArrayList<Column>();
 		this.foreignKeys = new HashMap<String, List<ForeignKey>>();
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -83,6 +83,10 @@ public class Table {
 			}
 		}
 
+		return null;
+	}
+
+	public Column createColumn(String columnName) {
 		Column column = new Column(this, columnName);
 		columns.add(column);
 		return column;
