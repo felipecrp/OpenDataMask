@@ -1,15 +1,9 @@
 package com.github.odm.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.github.odm.mask.Mask;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * <p>
@@ -19,23 +13,17 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * @author felipecrp
  * 
  */
-@XStreamAlias("column")
 public class Column {
-	@XStreamAsAttribute
 	private String name;
 
-	@XStreamOmitField
 	private Table table;
 
-	@XStreamOmitField
 	private int type;
 
 	private List<Mask> masks;
 
-	@XStreamOmitField
 	private boolean isNullable;
 
-	@XStreamOmitField
 	private List<ForeignKey> foreignKeys;
 
 	public Column(Table table, String name) {
@@ -64,9 +52,9 @@ public class Column {
 	}
 
 	public void addMask(Mask mask) {
-		//if (mask != null && mask.canMask(this)) {
+		if (mask != null && mask.canMask(this)) {
 			masks.add(mask);
-	//	}
+		}
 	}
 
 	public List<Mask> getMasks() {

@@ -19,25 +19,18 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * @author felipecrp
  * 
  */
-@XStreamAlias("table")
 public class Table {
-	@XStreamAsAttribute
 	private String name;
 
-	@XStreamImplicit
 	private List<Column> columns;
 
-	@XStreamOmitField
 	private Schema schema;
 
-	@XStreamOmitField
 	private Map<String, List<ForeignKey>> foreignKeys;
 
-	@XStreamOmitField
 	private List<Column> primaryKey;
 
 	@Deprecated
-	@XStreamOmitField
 	private boolean empty;
 
 	public Table(Schema schema, String name) {
