@@ -56,13 +56,11 @@ public class ODM {
 	public void run(File config, Connection orignConn, Connection destConn)
 			throws SQLException, IOException {
 
-		XStream configLoader = new XStream();
-		configLoader.processAnnotations(SchemaXml.class);
-		SchemaXml schemaXml = (SchemaXml) configLoader
-				.fromXML(new FileInputStream(config));
-
 		MetadataReader metadataReader = new MetadataReader(orignConn);
 		Schema schema = metadataReader.buildSchema();
+		
+		ConfigManager configManager = new ConfigManager(config);
+		configManager.apply(schema);
 
 		for (Table table : schema.getTables()) {
 			System.out.println(table);
@@ -99,64 +97,6 @@ public class ODM {
 		options.addOption(xmlOpt);
 
 		return options;
-	}
-
-	private void loadSchema(Connection conn, Schema schema) throws SQLException {
-		DatabaseMetaData metadata = conn.getMetaData();
-		ResultSet result = metadata.getTables(null, null, "%",
-				new String[] { "TABLE" });
-
-		while (result.next()) {
-			String tableName = result.getString("TABLE_NAME");
-			Table table = schema.getTable(tableName);
-
-			PreparedStatement statement = conn
-					.prepareStatement("select * from " + tableName);
-			statement.setFetchSize(1);
-			ResultSet tableResult = statement.executeQuery();
-
-			ResultSetMetaData tableMetaData = tableResult.getMetaData();
-			for (int i = 1; i <= tableMetaData.getColumnCount(); i++) {
-				String columnName = tableMetaData.getColumnName(i);
-				int type = tableMetaData.getColumnType(i);
-				int nullable = tableMetaData.isNullable(i);
-
-				Column column = table.getColumn(columnName);
-				column.setType(type);
-				column.setNullable(nullable);
-			}
-
-			ResultSet primaryKeyResult = metadata.getPrimaryKeys(null, null,
-					tableName);
-			while (primaryKeyResult.next()) {
-				String primaryKeyColumnName = primaryKeyResult
-						.getString("COLUMN_NAME");
-				Column primaryKeyColumn = table.getColumn(primaryKeyColumnName);
-				table.addPrimaryColumn(primaryKeyColumn);
-			}
-
-			ResultSet foreignKeyResult = metadata.getExportedKeys(null, null,
-					tableName);
-			while (foreignKeyResult.next()) {
-				String foreignKeyName = foreignKeyResult.getString("FK_NAME");
-				String foreingTableName = foreignKeyResult
-						.getString("FKTABLE_NAME");
-				Table foreingTable = schema.getTable(foreingTableName);
-
-				String foreingColumnName = foreignKeyResult
-						.getString("FKCOLUMN_NAME");
-				Column foreingColumn = foreingTable
-						.getColumn(foreingColumnName);
-
-				String primaryColumnName = foreignKeyResult
-						.getString("PKCOLUMN_NAME");
-				Column primaryColumn = table.getColumn(primaryColumnName);
-
-				foreingTable.addForeignKey(foreignKeyName, primaryColumn,
-						foreingColumn);
-			}
-
-		}
 	}
 
 }
