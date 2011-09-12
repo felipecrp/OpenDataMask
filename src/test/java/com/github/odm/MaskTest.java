@@ -19,6 +19,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.github.odm.exception.ConfigException;
+
 public class MaskTest {
 
 	private Connection orignConn;
@@ -42,11 +44,29 @@ public class MaskTest {
 	}
 
 	@Test
-	public void copy() throws SQLException, URISyntaxException, IOException {
+	public void copy() throws SQLException, URISyntaxException, IOException, ConfigException {
 
 		ODM odm = new ODM();
 		File config = new File(new URI(getClass().getClassLoader()
 				.getResource("copy.xml").toString()));
+		odm.run(config, orignConn, destConn);
+
+		PreparedStatement state = destConn
+				.prepareStatement("select * from Student");
+		ResultSet result = state.executeQuery();
+		while (result.next()) {
+			System.out.println(result.getString("id") + ":"
+					+ result.getString("name"));
+		}
+
+	}
+	
+	@Test
+	public void nullable() throws SQLException, URISyntaxException, IOException, ConfigException {
+
+		ODM odm = new ODM();
+		File config = new File(new URI(getClass().getClassLoader()
+				.getResource("mask-nullable.xml").toString()));
 		odm.run(config, orignConn, destConn);
 
 		PreparedStatement state = destConn

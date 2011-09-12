@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.github.odm.mask.Mask;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -24,6 +25,8 @@ public class Table {
 
 	private List<Column> columns;
 
+	private List<Mask> masks;
+
 	private Schema schema;
 
 	private Map<String, List<ForeignKey>> foreignKeys;
@@ -39,18 +42,13 @@ public class Table {
 					"Table must have a not null schema and name");
 		}
 
+		this.masks = new ArrayList<Mask>();
 		this.schema = schema;
 		this.name = name;
 		this.columns = new ArrayList<Column>();
 		this.primaryKey = new ArrayList<Column>();
 		this.foreignKeys = new HashMap<String, List<ForeignKey>>();
 		this.empty = false;
-	}
-
-	public void readResolve() {
-		this.columns = new ArrayList<Column>();
-		this.primaryKey = new ArrayList<Column>();
-		this.foreignKeys = new HashMap<String, List<ForeignKey>>();
 	}
 
 	public String getName() {
@@ -83,6 +81,16 @@ public class Table {
 		Column column = new Column(this, columnName);
 		columns.add(column);
 		return column;
+	}
+
+	public void addMask(Mask mask) {
+		if (mask != null) {
+			this.masks.add(mask);
+		}
+	}
+
+	public List<Mask> getMasks() {
+		return masks;
 	}
 
 	public void addPrimaryColumn(Column column) {
@@ -146,4 +154,5 @@ public class Table {
 	public List<Column> getPrimaryKey() {
 		return primaryKey;
 	}
+
 }

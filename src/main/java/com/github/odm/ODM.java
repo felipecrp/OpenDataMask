@@ -19,6 +19,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
 import com.github.odm.data.DataTable;
+import com.github.odm.exception.ConfigException;
 import com.github.odm.mask.NullableMask;
 import com.github.odm.mask.StringList;
 import com.github.odm.mask.UniqueStringList;
@@ -54,7 +55,7 @@ public class ODM {
 	}
 
 	public void run(File config, Connection orignConn, Connection destConn)
-			throws SQLException, IOException {
+			throws SQLException, IOException, ConfigException {
 
 		MetadataReader metadataReader = new MetadataReader(orignConn);
 		Schema schema = metadataReader.buildSchema();

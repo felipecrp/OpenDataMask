@@ -3,6 +3,7 @@ package com.github.odm.xml;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.odm.model.Table;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
@@ -13,6 +14,13 @@ public class SchemaXml {
 
 	public SchemaXml() {
 		this.tables = new ArrayList<TableXml>();
+	}
+
+	private Object readResolve() {
+		if (tables == null) {
+			tables = new ArrayList<TableXml>();
+		}
+		return this;
 	}
 
 	public SchemaXml(TableXml... tables) {

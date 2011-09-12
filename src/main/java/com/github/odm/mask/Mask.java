@@ -1,5 +1,7 @@
 package com.github.odm.mask;
 
+import java.util.Properties;
+
 import com.github.odm.model.Column;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -33,4 +35,8 @@ public interface Mask {
 	 * @return true if the column can be masked
 	 */
 	boolean canMask(Column column);
+	
+	void config(Properties params);
+	
+	void addColumn(Column column);
 }
