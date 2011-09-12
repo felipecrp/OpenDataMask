@@ -1,5 +1,7 @@
 package com.github.odm.xml;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -14,20 +16,24 @@ public class MaskXml {
 	@XStreamAsAttribute
 	private String classname;
 
+	@XStreamImplicit
+	private List<ColumnXml> columns;
+	
 	private Properties params;
 
-	public MaskXml() {
+	public MaskXml(String classname, ColumnXml... columns) {
 		this.params = new Properties();
-	}
-
-	public MaskXml(String classname) {
-		this();
-
+		this.columns = new ArrayList<ColumnXml>();
+		
+		for (ColumnXml columnXml : columns) {
+			this.columns.add(columnXml);
+		}
+		
 		this.classname = classname;
 	}
 
-	public MaskXml(String classname, Properties params) {
-		this(classname);
+	public MaskXml(String classname, Properties params, ColumnXml... columns) {
+		this(classname, columns);
 
 		this.params = params;
 	}
@@ -38,5 +44,9 @@ public class MaskXml {
 
 	public Properties getParams() {
 		return params;
+	}
+	
+	public List<ColumnXml> getColumns() {
+		return columns;
 	}
 }

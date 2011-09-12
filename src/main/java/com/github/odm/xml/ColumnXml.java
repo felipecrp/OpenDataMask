@@ -12,27 +12,12 @@ public class ColumnXml {
 	@XStreamAsAttribute
 	private String name;
 
-	@XStreamImplicit
-	private List<MaskXml> masks;
-
-	public ColumnXml() {
-		this.masks = new ArrayList<MaskXml>();
-	}
-
-	public ColumnXml(String name, MaskXml... masks) {
-		this();
+	public ColumnXml(String name) {
 		this.name = name;
-		
-		for (MaskXml maskXml : masks) {
-			this.masks.add(maskXml);
-		}
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public List<MaskXml> getMasks() {
-		return masks;
-	}
 }

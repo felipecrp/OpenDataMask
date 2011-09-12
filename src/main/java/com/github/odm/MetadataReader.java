@@ -63,8 +63,6 @@ public class MetadataReader {
 		// TODO Auto-generated method stub
 	}
 	
-	
-	
 	protected void readForeignKeys() {
 		// TODO Auto-generated method stub
 	}

@@ -13,26 +13,26 @@ public class TableXml {
 	private String name;
 
 	@XStreamImplicit
-	private List<ColumnXml> columns;
+	private List<MaskXml> masks;
 
 	public TableXml() {
-		this.columns = new ArrayList<ColumnXml>();
+		this.masks = new ArrayList<MaskXml>();
 	}
 
-	public TableXml(String name, ColumnXml... columns) {
+	public TableXml(String name, MaskXml... masks) {
 		this();
 
 		this.name = name;
-		for (ColumnXml columnXml : columns) {
-			this.columns.add(columnXml);
+		for (MaskXml maskXml : masks) {
+			this.masks.add(maskXml);
 		}
 	}
 
 	public String getName() {
 		return name;
 	}
-
-	public List<ColumnXml> getColumns() {
-		return columns;
+	
+	public List<MaskXml> getMasks() {
+		return masks;
 	}
 }

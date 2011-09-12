@@ -26,18 +26,18 @@ public class XmlTest {
 
 	@Test
 	public void serialize() throws URISyntaxException, IOException {
-		MaskXml mask1 = new MaskXml(NullableMask.class.getName());
+
+		ColumnXml a_a = new ColumnXml("a");
+		ColumnXml a_b = new ColumnXml("b");
+		MaskXml mask1 = new MaskXml(NullableMask.class.getName(), a_a, a_b);
+
+		ColumnXml b_a = new ColumnXml("c");
 		Properties mask2Prop = new Properties();
 		mask2Prop.setProperty("list", "AAA,BBB,CCC,DDD,EEE");
-		MaskXml mask2 = new MaskXml(StringList.class.getName(), mask2Prop);
+		MaskXml mask2 = new MaskXml(StringList.class.getName(), mask2Prop, b_a);
 
-		ColumnXml a_a = new ColumnXml("a", mask1);
-		ColumnXml a_b = new ColumnXml("b");
-		ColumnXml b_a = new ColumnXml("a");
-		ColumnXml b_b = new ColumnXml("b", mask2);
-
-		TableXml a = new TableXml("A", a_a, a_b);
-		TableXml b = new TableXml("B", b_a, b_b);
+		TableXml a = new TableXml("A", mask1);
+		TableXml b = new TableXml("B", mask2);
 
 		SchemaXml schema = new SchemaXml(a, b);
 
@@ -45,13 +45,13 @@ public class XmlTest {
 		stream.autodetectAnnotations(true);
 		System.out.println(stream.toXML(schema));
 
-		File xml = new File(new URI(getClass().getClassLoader().getResource("xml-test.xml").toString()));
+		File xml = new File(new URI(getClass().getClassLoader()
+				.getResource("xml-test.xml").toString()));
 		byte[] buffer = new byte[(int) xml.length()];
 		BufferedInputStream f = new BufferedInputStream(
 				new FileInputStream(xml));
 		f.read(buffer);
 		String originalXmlString = new String(buffer);
-		
 		assertEquals(originalXmlString, stream.toXML(schema));
 	}
 
@@ -59,18 +59,18 @@ public class XmlTest {
 	public void deserialize() throws URISyntaxException {
 		XStream stream = new XStream();
 		stream.processAnnotations(SchemaXml.class);
-		File xml = new File(new URI(getClass().getClassLoader().getResource("xml-test.xml").toString()));
+		File xml = new File(new URI(getClass().getClassLoader()
+				.getResource("xml-test.xml").toString()));
 		SchemaXml schema = (SchemaXml) stream.fromXML(xml);
-		
-		assertEquals(2, schema.getTables().size());		
+
+		assertEquals(2, schema.getTables().size());
 		TableXml table = schema.getTables().get(0);
 		assertEquals("A", table.getName());
-		
-		assertEquals(2, table.getColumns().size());	
-		ColumnXml column = table.getColumns().get(0);
-		assertEquals("a", column.getName());
-		
-		MaskXml mask = column.getMasks().get(0);
+
+		assertEquals(1, table.getMasks().size());
+		MaskXml mask = table.getMasks().get(0);
 		assertEquals("com.github.odm.mask.NullableMask", mask.getClassname());
+
+		assertEquals(2, mask.getColumns().size());
 	}
 }
