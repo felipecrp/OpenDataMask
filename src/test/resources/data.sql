@@ -1,7 +1,7 @@
 
-INSERT INTO Student (id,name) VALUES (1,'Albert');
-INSERT INTO Student (id,name) VALUES (2,'Bob');
-INSERT INTO Student (id,name) VALUES (3,'Charlie');
-INSERT INTO Student (id,name) VALUES (4,'Doug');
-INSERT INTO Student (id,name) VALUES (5,'Fuzzy');
+INSERT INTO Student (id,name, nickname) VALUES (1,'Albert','Bert');
+INSERT INTO Student (id,name, nickname) VALUES (2,'Bob','Big old Bob');
+INSERT INTO Student (id,name, nickname) VALUES (3,'Charlie','CL');
+INSERT INTO Student (id,name, nickname) VALUES (4,'Doug', NULL);
+INSERT INTO Student (id,name, nickname) VALUES (5,'Fuzzy','FY');
 

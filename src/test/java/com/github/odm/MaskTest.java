@@ -44,7 +44,8 @@ public class MaskTest {
 	}
 
 	@Test
-	public void copy() throws SQLException, URISyntaxException, IOException, ConfigException {
+	public void copy() throws SQLException, URISyntaxException, IOException,
+			ConfigException {
 
 		ODM odm = new ODM();
 		File config = new File(new URI(getClass().getClassLoader()
@@ -56,13 +57,15 @@ public class MaskTest {
 		ResultSet result = state.executeQuery();
 		while (result.next()) {
 			System.out.println(result.getString("id") + ":"
-					+ result.getString("name"));
+					+ result.getString("name") + ":"
+					+ result.getString("nickname"));
 		}
 
 	}
-	
+
 	@Test
-	public void nullable() throws SQLException, URISyntaxException, IOException, ConfigException {
+	public void nullable() throws SQLException, URISyntaxException,
+			IOException, ConfigException {
 
 		ODM odm = new ODM();
 		File config = new File(new URI(getClass().getClassLoader()
@@ -74,7 +77,8 @@ public class MaskTest {
 		ResultSet result = state.executeQuery();
 		while (result.next()) {
 			System.out.println(result.getString("id") + ":"
-					+ result.getString("name"));
+					+ result.getString("name") + ":"
+					+ result.getString("nickname"));
 		}
 
 	}
@@ -85,7 +89,7 @@ public class MaskTest {
 		destConn.close();
 	}
 
-	//TODO make this static and load resource from static method
+	// TODO make this static and load resource from static method
 	private void runScript(String uri, String script) throws URISyntaxException {
 		SQLExec sqlExec = new SQLExec();
 		Project project = new Project();

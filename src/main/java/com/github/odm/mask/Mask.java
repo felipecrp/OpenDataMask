@@ -1,5 +1,6 @@
 package com.github.odm.mask;
 
+import java.util.Map;
 import java.util.Properties;
 
 import com.github.odm.model.Column;
@@ -19,11 +20,11 @@ public interface Mask {
 	 * Mask an object
 	 * </p>
 	 * 
-	 * @param obj
-	 *            the object
+	 * @param row the table row to be masked
 	 * @return the masked object
 	 */
-	Object mask(Object obj);
+	void mask(Map<String, Object> row);
+
 
 	/**
 	 * <p>
@@ -39,4 +40,5 @@ public interface Mask {
 	void config(Properties params);
 	
 	void addColumn(Column column);
+
 }

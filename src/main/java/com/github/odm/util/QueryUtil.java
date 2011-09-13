@@ -16,21 +16,9 @@ public class QueryUtil {
 
 	// TODO avoid loops
 	public static void delete(Connection conn, Table table) throws SQLException {
-		if (!table.isEmpty()) {
-			Column pk = table.getPrimaryKey().get(0);
-
-			for (ForeignKey fk : pk.getForeignKeys()) {
-				delete(conn, fk.getForeignKeyColumn().getTable());
-			}
-
-			PreparedStatement delete = conn.prepareStatement("DELETE FROM "
-					+ table.getName());
-			boolean sucess = delete.execute();
-			if (sucess) {
-				table.setEmpty(true);
-			}
-		}
-
+		PreparedStatement delete = conn.prepareStatement("DELETE FROM "
+				+ table.getName());
+		boolean sucess = delete.execute();
 	}
 
 	public static ResultSet select(Connection conn, Table table)
@@ -82,7 +70,7 @@ public class QueryUtil {
 			}
 
 			if (row.get(column.getName()) == null) {
-				insert += "null";
+				insert += "NULL";
 			} else {
 				switch (column.getType()) {
 				case Types.VARCHAR:

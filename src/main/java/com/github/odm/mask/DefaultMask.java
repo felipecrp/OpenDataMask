@@ -1,5 +1,6 @@
 package com.github.odm.mask;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -9,8 +10,15 @@ public abstract class DefaultMask implements Mask {
 	private Properties params;
 	private List<Column> columns;
 
+	public DefaultMask() {
+		columns = new ArrayList<Column>();
+		params = new Properties();
+	}
+
 	public void config(Properties params) {
-		this.params = params;
+		if (params != null) {
+			this.params = params;
+		}
 	}
 
 	public void addColumn(Column column) {

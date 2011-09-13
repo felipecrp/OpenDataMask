@@ -1,14 +1,9 @@
 package com.github.odm;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import org.apache.commons.cli.CommandLine;
@@ -20,15 +15,9 @@ import org.apache.commons.cli.PosixParser;
 
 import com.github.odm.data.DataTable;
 import com.github.odm.exception.ConfigException;
-import com.github.odm.mask.NullableMask;
-import com.github.odm.mask.StringList;
-import com.github.odm.mask.UniqueStringList;
-import com.github.odm.model.Column;
 import com.github.odm.model.Schema;
 import com.github.odm.model.Table;
 import com.github.odm.util.QueryUtil;
-import com.github.odm.xml.SchemaXml;
-import com.thoughtworks.xstream.XStream;
 
 public class ODM {
 
@@ -64,7 +53,7 @@ public class ODM {
 		configManager.apply(schema);
 
 		for (Table table : schema.getTables()) {
-			System.out.println(table);
+			QueryUtil.delete(destConn, table);
 		}
 
 		for (Table table : schema.getTables()) {

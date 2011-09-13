@@ -2,7 +2,7 @@
 <schema>
   <table name="Student">
     <mask class="com.github.odm.mask.NullableMask">
-      <column name="name"/>
+      <column name="nickname"/>
       <params/>
     </mask>
   </table>

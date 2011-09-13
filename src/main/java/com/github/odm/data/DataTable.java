@@ -34,20 +34,15 @@ public class DataTable {
 	}
 
 	public void mask() {
-		for (Column column : table.getColumns()) {
-			Object obj = row.get(column.getName());
-			for (Mask mask : column.getMasks()) {
-				obj = mask.mask(obj);
-			}
-
-			row.put(column.getName(), obj);
+		for (Mask mask : table.getMasks()) {
+			mask.mask(row);
 		}
 	}
-	
+
 	public Table getTable() {
 		return table;
 	}
-	
+
 	public Map<String, Object> getRow() {
 		return row;
 	}

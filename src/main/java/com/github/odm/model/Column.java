@@ -20,14 +20,11 @@ public class Column {
 
 	private int type;
 
-	private List<Mask> masks;
-
 	private boolean isNullable;
 
 	private List<ForeignKey> foreignKeys;
 
 	public Column(Table table, String name) {
-		this.masks = new ArrayList<Mask>();
 		this.name = name;
 		this.isNullable = true;
 		this.table = table;
@@ -49,16 +46,6 @@ public class Column {
 
 	public void setType(int type) {
 		this.type = type;
-	}
-
-	public void addMask(Mask mask) {
-		if (mask != null && mask.canMask(this)) {
-			masks.add(mask);
-		}
-	}
-
-	public List<Mask> getMasks() {
-		return masks;
 	}
 
 	public void setNullable(int nullable) {

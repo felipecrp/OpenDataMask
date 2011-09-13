@@ -1,12 +1,10 @@
 package com.github.odm;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,7 +13,6 @@ import java.util.Properties;
 import org.junit.Test;
 
 import com.github.odm.mask.NullableMask;
-import com.github.odm.mask.StringList;
 import com.github.odm.xml.ColumnXml;
 import com.github.odm.xml.MaskXml;
 import com.github.odm.xml.SchemaXml;
@@ -34,7 +31,7 @@ public class XmlTest {
 		ColumnXml b_a = new ColumnXml("c");
 		Properties mask2Prop = new Properties();
 		mask2Prop.setProperty("list", "AAA,BBB,CCC,DDD,EEE");
-		MaskXml mask2 = new MaskXml(StringList.class.getName(), mask2Prop, b_a);
+		MaskXml mask2 = new MaskXml("com.github.odm.mask.StringList", mask2Prop, b_a);
 
 		TableXml a = new TableXml("A", mask1);
 		TableXml b = new TableXml("B", mask2);
